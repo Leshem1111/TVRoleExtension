@@ -11,7 +11,7 @@ module.exports = {
     const voiceChannel = member.voice.channel;
 
     if (!voiceChannel) {
-      return interaction.reply({ content: "You're not in a vc!", ephemeral: true });
+      return interaction.reply({ content: "אינך בוויס!", ephemeral: true });
     }
 
     if (!member.roles.cache.has(process.env.ROLE_18_ID)) {
@@ -29,6 +29,19 @@ module.exports = {
     }
 
     try {
+      const everyoneOverwrite = voiceChannel.permissionOverwrites.cache.get(interaction.guild.roles.everyone.id);
+      const role18Overwrite = voiceChannel.permissionOverwrites.cache.get(process.env.ROLE_18_ID);
+
+      const everyoneCannotConnect = everyoneOverwrite?.deny.has(PermissionFlagsBits.Connect);
+      const role18CanConnect = role18Overwrite?.allow.has(PermissionFlagsBits.Connect);
+
+      if (everyoneCannotConnect && role18CanConnect) {
+        return interaction.reply({
+          content: "הוויס כבר מוגבל ל18+ בלבד!",
+          ephemeral: true
+        });
+      }
+
       await voiceChannel.permissionOverwrites.edit(interaction.guild.roles.everyone, {
         Connect: false
       });
