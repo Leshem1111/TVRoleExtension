@@ -11,19 +11,19 @@ module.exports = {
     const voiceChannel = member.voice.channel;
 
     if (!voiceChannel) {
-      return interaction.reply({ content: "אינך בוויס!", ephemeral: true });
+      return interaction.reply({ content: "You're not in a voice!", ephemeral: true });
     }
 
     if (!member.roles.cache.has(process.env.ROLE_18_ID)) {
       return interaction.reply({
-        content: "אתה לא 18+, כדי להיבחן ל18+ : <#1386072655219920926>",
+        content: "You don't have that role!",
         ephemeral: true
       });
     }
 
     if (!member.roles.cache.has(process.env.ROOM_LEADER_ID)) {
       return interaction.reply({
-        content: "!אינך מנהל החדר",
+        content: "You are not the room's creator!",
         ephemeral: true
       });
     }
@@ -37,7 +37,7 @@ module.exports = {
 
       if (everyoneCannotConnect && role18CanConnect) {
         return interaction.reply({
-          content: "הוויס כבר מוגבל ל18+ בלבד!",
+          content: "This voice is already limited to this role only!",
           ephemeral: true
         });
       }
@@ -51,14 +51,14 @@ module.exports = {
       });
 
       return interaction.reply({
-        content: "הוויס מוגבל לחברי 18+ בלבד",
+        content: "Voice has been restricted.",
         ephemeral: true
       });
 
     } catch (err) {
       console.error(err);
       return interaction.reply({
-        content: "אירעה שגיאה, בבקשה תפנה לצוות גבוה",
+        content: "Error",
         ephemeral: true
       });
     }
